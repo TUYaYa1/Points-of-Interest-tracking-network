@@ -35,15 +35,10 @@ def test():
     np.random.set_state(state)
     np.random.shuffle(label)
 
-    # 1000,1,128,128
     img_tensor = torch.FloatTensor(img).unsqueeze(1).to(device)
-    # 1000,3,128,128
     label_tensor = torch.FloatTensor(label).to(device)
     print(img_tensor.shape)
     print(label_tensor.shape)
-
-    test_img = img_tensor[900:1000]
-    test_label = label_tensor[900:1000]
 
     sum_loss = 0
     s = 0
@@ -51,7 +46,7 @@ def test():
         start_idx = b
         end_idx = (b + batch_size) if (b + batch_size) < test_num else test_num
         #
-        test_input_imgA = test_img[start_idx:end_idx]
+        test_input_imgA = img_tensor[start_idx:end_idx]
 
         with torch.no_grad():
             test_out = net(test_input_imgA).to(device)
@@ -64,11 +59,7 @@ def test():
                     zuobiao_h1[j,...] = h * 1536 / 768
                     zuobiao1 = np.concatenate((zuobiao_w1, zuobiao_h1), axis=1)
                     print(zuobiao1.shape)
-                # zuobiao_w2[i,...] = zuobiao_w1
-                # zuobiao_h2[i,...] = zuobiao_h1
                 zuobiao2[i,...] = zuobiao1
-            # zuobiao_w = np.concatenate((zuobiao_w, zuobiao_w2), axis=0)
-            # zuobiao_h = np.concatenate((zuobiao_h, zuobiao_h2), axis=0)
             zuobiao = np.concatenate((zuobiao, zuobiao2), axis=0)
             print(zuobiao.shape)
             torch.cuda.empty_cache()
