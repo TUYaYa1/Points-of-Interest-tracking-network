@@ -85,27 +85,27 @@ class U_Net_v1(nn.Module):
 
         self.Maxpool = nn.MaxPool2d(kernel_size=2, stride=2)
 
-        self.Conv1 = conv_block(ch_in=img_ch, ch_out=64)  # 64
-        self.Conv2 = conv_block(ch_in=64, ch_out=128)  # 64 128
-        self.Conv3 = conv_block(ch_in=128, ch_out=256)  # 128 256
-        self.Conv4 = conv_block(ch_in=256, ch_out=512)  # 256 512
-        self.Conv5 = conv_block(ch_in=512, ch_out=1024)  # 512 1024
+        self.Conv1 = conv_block(ch_in=img_ch, ch_out=64)  
+        self.Conv2 = conv_block(ch_in=64, ch_out=128)  
+        self.Conv3 = conv_block(ch_in=128, ch_out=256)  
+        self.Conv4 = conv_block(ch_in=256, ch_out=512)  
+        self.Conv5 = conv_block(ch_in=512, ch_out=1024)  #
 
         self.cbam1 = CBAM(channel=64)
         self.cbam2 = CBAM(channel=128)
         self.cbam3 = CBAM(channel=256)
         self.cbam4 = CBAM(channel=512)
 
-        self.Up5 = up_conv(ch_in=1024, ch_out=512)  # 1024 512
+        self.Up5 = up_conv(ch_in=1024, ch_out=512) 
         self.Up_conv5 = conv_block(ch_in=1024, ch_out=512)
 
-        self.Up4 = up_conv(ch_in=512, ch_out=256)  # 512 256
+        self.Up4 = up_conv(ch_in=512, ch_out=256) 
         self.Up_conv4 = conv_block(ch_in=512, ch_out=256)
 
-        self.Up3 = up_conv(ch_in=256, ch_out=128)  # 256 128
+        self.Up3 = up_conv(ch_in=256, ch_out=128)
         self.Up_conv3 = conv_block(ch_in=256, ch_out=128)
 
-        self.Up2 = up_conv(ch_in=128, ch_out=64)  # 128 64
+        self.Up2 = up_conv(ch_in=128, ch_out=64) 
         self.Up_conv2 = conv_block(ch_in=128, ch_out=64)
 
         self.Conv_1x1 = nn.Conv2d(64, output_ch, kernel_size=1, stride=1, padding=0)  
