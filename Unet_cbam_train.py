@@ -33,9 +33,7 @@ np.random.shuffle(img)
 np.random.set_state(state)
 np.random.shuffle(label)
 
-#1000,1,128,128
 img_tensor = torch.FloatTensor(img).unsqueeze(1).to(device)
-#1000,3,128,128
 label_tensor = torch.FloatTensor(label).to(device)
 print(img_tensor.shape)
 print(label_tensor.shape)
@@ -47,13 +45,6 @@ val_img = img_tensor[train_size:val_size]
 val_label = label_tensor[train_size:val_size]
 
 net = U_Net_v1().to(device)
-
-
-# optimizer = optim.Adam(net.parameters(),lr=0.01)
-# optimizer = torch.optim.Adam(net.parameters(), lr=conf.lr, weight_decay=conf.decay)
-# scheduler = lr_scheduler.StepLR(optimizer,
-#                                     step_size=conf.step_size,
-#                                     gamma=conf.gamma)
 
 optimizer=optim.Adam(net.parameters())
 scheduler = lr_scheduler.StepLR(optimizer,step_size=10,gamma = 0.1)
@@ -84,7 +75,7 @@ def train():
         e_loss = sum_loss / s
         print("epoch: {}, loss: {}".format(epoch, e_loss))
         trainloss_log.logger.info('epoch: {},loss: {}'.format(epoch, e_loss))
-        if epoch%5==0 and epoch>19:
+        if epoch%5==0 and epoch>70:
             torch.save(net.state_dict(),"save_path"+str(epoch)+".pth")
 
         net.eval()
@@ -95,7 +86,6 @@ def train():
             start_val_idx = b1
             end_val_idx = (b1 + batch_size) if (b1 + batch_size) < val_size else val_size
             input_val_img = img_tensor[start_val_idx:end_val_idx]
-            # poi_val = poi_tensor[start_val_idx:end_val_idx]
             input_val_label = label_tensor[start_val_idx:end_val_idx]
 
             with torch.no_grad():
